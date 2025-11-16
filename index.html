@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vishal Kumar — Certificates & Documents</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#06b6d4}
+    *{box-sizing:border-box}
+    body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;smooth-font-variant:antialiased;margin:0;background:linear-gradient(180deg,#071022 0%,#0b1220 100%);color:#e6eef6}
+    .container{max-width:1100px;margin:36px auto;padding:24px}
+    header{display:flex;gap:18px;align-items:center;margin-bottom:20px}
+    .avatar{width:84px;height:84px;border-radius:12px;background:linear-gradient(135deg,#0ea5a6,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px}
+    h1{margin:0;font-size:20px}
+    p.bio{margin:6px 0 0;color:var(--muted);font-size:14px}
+    .controls{display:flex;gap:8px;margin-top:14px}
+    .search{padding:10px 12px;border-radius:10px;background:#071b2a;border:1px solid rgba(255,255,255,0.03);color:inherit;min-width:220px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:20px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.03);padding:14px;border-radius:12px;display:flex;gap:12px;align-items:center}
+    .icon{width:52px;height:52px;border-radius:8px;background:#031423;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .meta{flex:1}
+    .meta h3{margin:0;font-size:15px}
+    .meta p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:8px}
+    .btn{padding:8px 10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);cursor:pointer;color:inherit;font-size:13px}
+    .btn.primary{background:var(--accent);color:#041022;border:0}
+    footer{margin-top:28px;color:var(--muted);font-size:13px}
+    @media (max-width:520px){header{flex-direction:column;align-items:flex-start}.controls{width:100%}.search{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="avatar">VK</div>
+      <div>
+        <h1>Vishal Kumar — Certificates & Documents</h1>
+        <p class="bio">A collection of course certificates, internship papers and analytics documents. Copy this file into the same folder where your PDFs are stored (or point links to the correct path).</p>
+        <div class="controls">
+          <input id="q" class="search" placeholder="Search documents (try: Power BI, Tally, IBM)" />
+          <button id="showAll" class="btn">Show all</button>
+          <button id="downloadAll" class="btn primary">Download list (CSV)</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="list" class="grid" aria-live="polite">
+        <!-- Cards are injected by JavaScript -->
+      </section>
+    </main>
+
+    <footer>
+      Tip: To make links work on GitHub pages, put this file in the root of the repo or in the same folder as your PDFs. The script uses encoded URLs so filenames with spaces or parentheses will open correctly.
+    </footer>
+  </div>
+
+  <script>
+    // filenames provided by you (edit if you rename files)
+    const files = [
+      '24162- Vishal Kumar-Certificate of Merit for Saraswati Puja 2024.pdf',
+      'BCG Data for Decision Makers Job.pdf',
+      'Data analyst.pdf',
+      'IBM SQL (1).pdf',
+      'Internship certificate .pdf',
+      'Introduction_to_JIRA (1).pdf',
+      'NestleNextgen.pdf',
+      'Power BI .pdf',
+      'Tally certificate.pdf',
+      'busines-analystExcel.pdf',
+      'exceldashboard.pdf',
+      'machine Learning (1).pdf'
+    ];
+
+    const listEl = document.getElementById('list');
+    const q = document.getElementById('q');
+
+    function encodeName(name){
+      // Use encodeURIComponent but keep slashes (not needed here) and replace spaces for readability
+      return encodeURIComponent(name).replace(/%20/g,' ');
+    }
+
+    function makeCard(name){
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      const icon = document.createElement('div');
+      icon.className = 'icon';
+      icon.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M13 2v6h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const title = document.createElement('h3');
+      title.textContent = name;
+      const desc = document.createElement('p');
+      desc.textContent = 'PDF document — click to open or download';
+      meta.appendChild(title);
+      meta.appendChild(desc);
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const open = document.createElement('a');
+      open.className = 'btn';
+      open.textContent = 'Open';
+      open.href = encodeURI(name);
+      open.target = '_blank';
+
+      const dl = document.createElement('a');
+      dl.className = 'btn';
+      dl.textContent = 'Download';
+      dl.href = encodeURI(name);
+      dl.setAttribute('download', '');
+
+      actions.appendChild(open);
+      actions.appendChild(dl);
+
+      card.appendChild(icon);
+      card.appendChild(meta);
+      card.appendChild(actions);
+      return card;
+    }
+
+    function renderList(filter=''){
+      listEl.innerHTML = '';
+      const filtered = files.filter(f=>f.toLowerCase().includes(filter.toLowerCase()));
+      if(filtered.length===0){
+        listEl.innerHTML = '<p style="color:var(--muted)">No documents found.</p>';
+        return;
+      }
+      filtered.forEach(name=>listEl.appendChild(makeCard(name)));
+    }
+
+    q.addEventListener('input',()=>renderList(q.value));
+    document.getElementById('showAll').addEventListener('click',()=>{ q.value=''; renderList(); });
+
+    document.getElementById('downloadAll').addEventListener('click',()=>{
+      const csv = 'filename\n' + files.map(f=>`"${f.replace(/"/g,'""')}"`).join('\n');
+      const blob = new Blob([csv],{type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'documents-list.csv'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // initial render
+    renderList();
+  </script>
+</body>
+</html>
